@@ -21,15 +21,18 @@
 			<div class="container pt-4 pb-5 samuraitravel-container">
 				<div class="row justify-content-center">
 					<div class="col-xxl-9 col-xl-10 col-lg-11">
-
-						<nav class="mb-4" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
-							<ol class="breadcrumb mb-0">
-								<li class="breadcrumb-item"><a th:href="@{/}">ホーム</a></li>
-								<li class="breadcrumb-item"><a th:href="@{/houses}">民宿一覧</a></li>
-								<li class="breadcrumb-item active" aria-current="page">民宿詳細</li>
-							</ol>
-						</nav>
-
+						<div class="d-flex justify-content-between">
+							<nav class="mb-4" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+								<ol class="breadcrumb mb-0">
+									<li class="breadcrumb-item"><a th:href="@{/}">ホーム</a></li>
+									<li class="breadcrumb-item"><a th:href="@{/houses}">民宿一覧</a></li>
+									<li class="breadcrumb-item active" aria-current="page">民宿詳細</li>
+								</ol>
+							</nav>
+							<a sec:authorize="isAuthenticated()" th:if="${hasNotLike}" th:href="@{/houses/__${house.getId()}__/likes/create}" class="me-2">&#9825;お気に入り追加</a>
+							<a sec:authorize="isAuthenticated()" th:if="${!hasNotLike}" th:href="@{/houses/__${house.getId()}__/likes/delete}" class="me-2">&#9829;お気に入り解除</a>
+						</div>
+						
 						<h1 class="mb-4 text-center" th:text="${house.getName()}"></h1>
 
 						<div th:if="${successMessage}" class="alert alert-info">
@@ -175,8 +178,7 @@
 
 				<div class="container col-xxl-9 col-xl-10 col-lg-11">
 					<h2 class="text-center mb-3">レビュー</h2>
-					<div sec:authorize="isAuthenticated()" th:if="${hasNotReview}" class="mx-auto mb-3"
-						style="width: 200px;">
+					<div sec:authorize="isAuthenticated()" th:if="${hasNotReview}" class="mx-auto mb-3" style="width: 200px;">
 						<a th:href="@{/houses/__${house.getId()}__/reviews/register}"
 							class="btn text-white shadow-sm w-100 samuraitravel-btn">レビューを投稿する</a>
 					</div>

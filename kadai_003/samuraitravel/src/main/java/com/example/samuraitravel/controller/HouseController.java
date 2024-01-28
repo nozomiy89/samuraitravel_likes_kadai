@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -18,18 +19,24 @@ import com.example.samuraitravel.entity.House;
 import com.example.samuraitravel.entity.Review;
 import com.example.samuraitravel.form.ReservationInputForm;
 import com.example.samuraitravel.repository.HouseRepository;
+import com.example.samuraitravel.repository.LikeRepository;
 import com.example.samuraitravel.repository.ReviewRepository;
 import com.example.samuraitravel.security.UserDetailsImpl;
+import com.example.samuraitravel.service.LikeService;
  
  @Controller
  @RequestMapping("/houses")
 public class HouseController {
      private final HouseRepository houseRepository;
      private final ReviewRepository reviewRepository;
+     private final LikeRepository likeRepository;
+     private final LikeService likeService;
      
-     public HouseController(HouseRepository houseRepository, ReviewRepository reviewRepository) {
+     public HouseController(HouseRepository houseRepository, ReviewRepository reviewRepository, LikeRepository likeRepository, LikeService likeService) {
          this.houseRepository = houseRepository;
          this.reviewRepository = reviewRepository;
+         this.likeRepository = likeRepository;
+         this.likeService = likeService;
      }     
    
      @GetMapping
@@ -83,14 +90,29 @@ public class HouseController {
     	 List<Review> latestReviews = reviewRepository.findTop6ByHouseOrderByCreatedAtDesc(house);
     	 long reviewCount = reviewRepository.countByHouse(house);
     	 boolean hasNotReview = (userDetailsImpl == null) || (reviewRepository.findByHouseAndUser(house, userDetailsImpl.getUser()) == null);
+    	 boolean hasNotLike = (userDetailsImpl == null) || (likeRepository.findByHouseAndUser(house, userDetailsImpl.getUser()) == null);
     	 
     	 model.addAttribute("house", house);
     	 model.addAttribute("reservationInputForm", new ReservationInputForm());
     	 model.addAttribute("latestReviews", latestReviews);
     	 model.addAttribute("reviewCount", reviewCount);
     	 model.addAttribute("hasNotReview", hasNotReview);
+    	 model.addAttribute("hasNotLike", hasNotLike);
     	 
     	 return "houses/show";
      }
-  
+     
+     @PostMapping("/{id}/likes/create")
+     public String like(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl, @PathVariable(name = "id") Integer id) {
+    	likeService.addLikes(id, userDetailsImpl.getUser().getId());
+    	
+    	return "redirect:/houses/{id}";
+     }
+     
+     @PostMapping("/{id}/likes/delete")
+     public String unlike(@PathVariable(name = "id") Integer id, Integer likeId) {
+    	 likeRepository.deleteById(likeId);
+    	 
+    	 return "redirect:/houses/{id}";
+     }
 }
