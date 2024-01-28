@@ -29,8 +29,12 @@
 									<li class="breadcrumb-item active" aria-current="page">民宿詳細</li>
 								</ol>
 							</nav>
-							<a sec:authorize="isAuthenticated()" th:if="${hasNotLike}" th:href="@{/houses/__${house.getId()}__/likes/create}" class="me-2">&#9825;お気に入り追加</a>
-							<a sec:authorize="isAuthenticated()" th:if="${!hasNotLike}" th:href="@{/houses/__${house.getId()}__/likes/delete}" class="me-2">&#9829;お気に入り解除</a>
+							<form method="post" sec:authorize="isAuthenticated()" th:if="${hasNotLike}" th:action="@{/houses/__${house.getId()}__/likes/create}">
+								<button class="btn favorite-btn">&#9825;お気に入り追加</button>
+							</form>
+							<form method="post" sec:authorize="isAuthenticated()" th:if="${!hasNotLike}" th:action="@{/houses/__${house.getId()}__/likes/delete}">
+								<button class="btn favorite-btn">&#9829;お気に入り解除</button>
+							</form>
 						</div>
 						
 						<h1 class="mb-4 text-center" th:text="${house.getName()}"></h1>

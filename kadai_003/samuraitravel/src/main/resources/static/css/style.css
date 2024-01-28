@@ -134,6 +134,15 @@ footer {
   color: #ff9529 !important;
 }
 
+.favorite-btn {
+	color: #5196a6;
+  	text-decoration: none !important;
+}
+
+.favorite-btn:hover {
+	color: #407784;
+}
+
 @media screen and (min-width: 1400px) {
   .samuraitravel-container {
     max-width: 1200px;
