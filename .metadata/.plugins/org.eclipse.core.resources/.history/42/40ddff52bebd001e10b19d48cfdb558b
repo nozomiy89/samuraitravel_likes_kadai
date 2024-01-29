@@ -1,0 +1,25 @@
+package com.example.samuraitravel.entity;
+
+@Entity
+@Table(name = "likes")
+@Data
+public class Like {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
+	private Integer id;
+	
+	@ManyToOne
+	@JoinColumn(name = "house_id")
+	private House house;
+	
+	@ManyToOne
+	@JoinColumn(name = "user_id")
+	private User user;
+	
+	@Column(name = "created_at", insertable = false, updatable = false)
+	private Timestamp createdAt;
+	
+	@Column(name = "updated_at", insertable = false, updatable = false)
+	private Timestamp updatedAt;
+}

@@ -1,0 +1,15 @@
+package com.example.samuraitravel.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@Controller
+@RequestMapping("/houses/{houseId}/likes")
+public class LikeController {
+	private final LikeRepository likeRepository;
+	
+	public LikeController(LikeRepository likeRepository) {
+		this.likeRepository = likeRepository;
+	}
+
+}

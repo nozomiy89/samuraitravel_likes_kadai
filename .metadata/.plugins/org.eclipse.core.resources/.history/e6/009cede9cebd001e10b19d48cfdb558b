@@ -1,0 +1,7 @@
+package com.example.samuraitravel.controller;
+
+@Controller
+@RequestMapping("/houses/{houseId}")
+public class LikeController {
+
+}

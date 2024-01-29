@@ -1,0 +1,21 @@
+package com.example.samuraitravel.service;
+
+import org.springframework.stereotype.Service;
+
+import com.example.samuraitravel.entity.Like;
+import com.example.samuraitravel.repository.LikeRepository;
+
+@Service
+public class LikeService {
+	private final LikeRepository likeRepository;
+	
+	public LikeService(LikeRepository likeRepository) {
+		this.likeRepository = likeRepository;
+	}
+	
+	@Transactional
+	public void addFavorite(Integer houseId, Integer userId) {
+		Like like = new Like();
+	}
+
+}
